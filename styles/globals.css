@@ -24,3 +24,10 @@ label {
 .btn-primary {
 	@apply bg-blue-900 text-white px-4 py-1 rounded-md;
 }
+
+.check-input {
+	display: flex;
+	width: 30px;
+	margin-top: 2px;
+	margin-bottom: 10px;
+}
