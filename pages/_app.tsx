@@ -1,14 +1,16 @@
 import "@/styles/globals.css";
-import type { AppProps } from "next/app";
-import { SessionProvider } from "next-auth/react";
+import { AuthProvider } from "../context/auth-context";
+import { AppProps } from "next/app";
+import ProtectedRoutes from "../utils/protected-routes";
 
-export default function App({
-	Component,
-	pageProps: { session, ...pageProps },
-}: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<SessionProvider session={session}>
-			<Component {...pageProps} />
-		</SessionProvider>
+		<AuthProvider>
+			<ProtectedRoutes>
+				<Component {...pageProps} />
+			</ProtectedRoutes>
+		</AuthProvider>
 	);
 }
+
+export default MyApp;
