@@ -1,3 +1,4 @@
+// baskets.tsx
 import Link from "next/link";
 import Layout from "../components/Layout";
 import ItemList from "../components/ItemList";
@@ -21,7 +22,7 @@ export default function Baskets() {
 	return (
 		<Layout>
 			<h1>Basket Page</h1>
-			<Link href={"/baskets/new"}>Add new basket</Link>
+			<Link href={"/baskets/Basket"}>Add new basket</Link>
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
