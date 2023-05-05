@@ -1,51 +1,55 @@
-// baskets/Basket.tsx
+// basket-items/BasketItem.tsx
 import { useState } from "react";
 import Layout from "../../components/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-export interface BasketProps {
+export interface BasketItemProps {
 	mode: "create" | "edit";
-	existingBasket?: {
+	existingBasketItem?: {
 		_id: number;
 		name: string;
 		description: string;
 		price: number;
-		color: string;
+		weight: number;
 		isSerbian: boolean;
 	};
 }
 
-export default function Basket({ mode, existingBasket }: BasketProps) {
+export default function BasketItem({
+	mode,
+	existingBasketItem,
+}: BasketItemProps) {
+	console.log(existingBasketItem);
 	const router = useRouter();
-	const [name, setName] = useState(existingBasket?.name || "");
+	const [name, setName] = useState(existingBasketItem?.name || "");
 	const [description, setDescription] = useState(
-		existingBasket?.description || ""
+		existingBasketItem?.description || ""
 	);
-	const [price, setPrice] = useState(existingBasket?.price || 0);
-	const [color, setColor] = useState(existingBasket?.color || "");
+	const [price, setPrice] = useState(existingBasketItem?.price || 0);
+	const [weight, setWeight] = useState(existingBasketItem?.weight || "");
 	const [isSerbian, setIsSerbian] = useState(
-		existingBasket?.isSerbian || false
+		existingBasketItem?.isSerbian || false
 	);
 
 	async function handleSubmit(e: any) {
 		e.preventDefault();
-		const data = { name, description, price, color, isSerbian };
+		const data = { name, description, price, weight, isSerbian };
 
 		if (mode !== "edit") {
-			await axios.post("http://localhost:9090/basket-type/create", data, {
+			await axios.post("http://localhost:9090/basket-item/create", data, {
 				withCredentials: true,
 			});
-			router.push("/baskets");
-		} else if (mode === "edit" && existingBasket) {
+			router.push("/basket-items");
+		} else if (mode === "edit" && existingBasketItem) {
 			await axios.patch(
-				`http://localhost:9090/basket-type/update\\${existingBasket._id}`,
+				`http://localhost:9090/basket-item/update\\${existingBasketItem._id}`,
 				data,
 				{
 					withCredentials: true,
 				}
 			);
-			router.push("/baskets");
+			router.push("/basket-items");
 		}
 	}
 
@@ -79,14 +83,14 @@ export default function Basket({ mode, existingBasket }: BasketProps) {
 					value={price}
 					onChange={(e) => setPrice(parseInt(e.target.value))}
 				/>
-				<label htmlFor="color">Basket color</label>
+				<label htmlFor="color">Basket weight</label>
 				<input
-					id="color"
-					name="color"
+					id="weight"
+					name="weight"
 					type="text"
 					placeholder="color"
-					value={color}
-					onChange={(e) => setColor(e.target.value)}
+					value={weight}
+					onChange={(e) => setWeight(e.target.value)}
 				/>
 				<label htmlFor="isSerbian">Is Serbian</label>
 				<input
