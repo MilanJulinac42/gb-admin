@@ -1,4 +1,4 @@
-// baskets/[id].tsx
+// baskets/edit/[id].tsx
 import Basket, { BasketProps } from "../Basket";
 import { GetServerSideProps } from "next";
 import axios from "axios";
