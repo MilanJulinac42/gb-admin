@@ -7,10 +7,11 @@ export default function NewBasket() {
 	const [description, setDescription] = useState("");
 	const [price, setPrice] = useState(0);
 	const [color, setColor] = useState("");
+	const [isSerbian, setIsSerbian] = useState(false);
 
 	async function createBasket(e: any) {
 		e.preventDefault();
-		const data = { name, description, price, color };
+		const data = { name, description, price, color, isSerbian };
 		await axios.post("http://localhost:9090/basket-type/create", data, {
 			withCredentials: true,
 		});
@@ -49,6 +50,14 @@ export default function NewBasket() {
 					value={color}
 					onChange={(e) => setColor(e.target.value)}
 				/>
+				<label htmlFor="isSerbian">Is Serbian</label>
+				<input
+					className="check-input"
+					type="checkbox"
+					id="isSerbian"
+					checked={isSerbian}
+					onChange={() => setIsSerbian(!isSerbian)}
+				></input>
 				<button type="submit" className="btn-primary">
 					Save
 				</button>
