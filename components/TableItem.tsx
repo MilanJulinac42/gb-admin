@@ -18,7 +18,7 @@ export default function TableItem({ item, type }: any) {
 
 	return (
 		<tr
-			className="bg-white text-black border-b border-gray-200"
+			className="bg-white text-black border-b border-gray-200 text-center"
 			key={item._id}
 		>
 			{type !== "basketItem" && (
@@ -48,13 +48,9 @@ export default function TableItem({ item, type }: any) {
 			<td className="px-4 py-2">
 				<div className="flex justify-center">
 					<Link href={`/${hrefValue}/edit/${item._id}`}>
-						<button className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2">
-							Edit
-						</button>
+						<button className="btn-edit">Edit</button>
 					</Link>
-					<button className="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-						Delete
-					</button>
+					<button className="btn-delete">Delete</button>
 				</div>
 			</td>
 		</tr>
