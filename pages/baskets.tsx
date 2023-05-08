@@ -13,7 +13,7 @@ export default function Baskets() {
 		axios
 			.get("http://localhost:9090/basket-type/find-all")
 			.then((response) => {
-				setItems(response.data);
+				setItems(response.data.basketTypes);
 				setIsLoading(false);
 			})
 			.catch((err) => console.log(err));

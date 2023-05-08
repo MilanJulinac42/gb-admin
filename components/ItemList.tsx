@@ -11,21 +11,23 @@ export default function ItemTable({ items, type }: any) {
 					<th className="px-4 py-2">Name</th>
 					<th className="px-4 py-2">Description</th>
 					<th className="px-4 py-2">Price</th>
-					<th className="px-4 py-2">Serbian</th>
-					{type !== "basketItem" && (
+					{type === "basketItem" && (
 						<th className="px-4 py-2">Color</th>
 					)}
+					{type === "giftBasket" && (
+						<th className="px-4 py-2">Profit</th>
+					)}
+					{type === "giftBasket" && (
+						<th className="px-4 py-2">Type</th>
+					)}
+					<th className="px-4 py-2">Serbian</th>
 					<th className="px-4 py-2">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
-				{type === "basketItem"
-					? items.basketItems.map((item: any) => (
-							<TableItem type={type} item={item}></TableItem>
-					  ))
-					: items.basketTypes.map((item: any) => (
-							<TableItem type={type} item={item}></TableItem>
-					  ))}
+				{items.map((item: any) => (
+					<TableItem type={type} item={item}></TableItem>
+				))}
 			</tbody>
 		</table>
 	);

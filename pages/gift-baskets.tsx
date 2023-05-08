@@ -1,19 +1,19 @@
-// basket-items.tsx
+// gift-baskets.tsx
 import Link from "next/link";
 import Layout from "../components/Layout";
 import ItemList from "../components/ItemList";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function Baskets() {
+export default function GiftBaskets() {
 	const [items, setItems] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		axios
-			.get("http://localhost:9090/basket-item/find-all")
+			.get("http://localhost:9090/gift-basket/find-all")
 			.then((response) => {
-				setItems(response.data.basketItems);
+				setItems(response.data.baskets);
 				setIsLoading(false);
 			})
 			.catch((err) => console.log(err));
@@ -22,11 +22,11 @@ export default function Baskets() {
 	return (
 		<Layout>
 			<h1>Basket Page</h1>
-			<Link href={"/basket-items/BasketItem"}>Add new basket item</Link>
+			<Link href={"/gift-baskets/GiftBasket"}>Add new gift basket</Link>
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
-				<ItemList type={"basketItem"} items={items}></ItemList>
+				<ItemList items={items} type={"giftBasket"}></ItemList>
 			)}
 		</Layout>
 	);

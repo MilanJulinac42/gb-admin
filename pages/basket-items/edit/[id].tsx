@@ -6,7 +6,7 @@ import axios from "axios";
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const id = context.params?.id;
 	const response = await axios.get(
-		`http://localhost:9090/basket-item/find\\${id}`
+		`http://localhost:9090/basket-item/find/${id}`
 	);
 	const existingBasketItemData = response.data.basketItem;
 	return { props: { existingBasketItemData } };
