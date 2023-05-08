@@ -1,51 +1,52 @@
-// baskets/Basket.tsx
+// gift-baskets/GiftBaskets.tsx
 import { useState } from "react";
 import Layout from "../../components/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-export interface BasketProps {
+export interface GiftBasketProps {
 	mode: "create" | "edit";
-	existingBasket?: {
+	existingGiftBasket?: {
 		_id: number;
 		name: string;
 		description: string;
 		price: number;
-		color: string;
+		profit: number;
+		type: string;
 		isSerbian: boolean;
 	};
 }
 
-export default function Basket({ mode, existingBasket }: BasketProps) {
+export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 	const router = useRouter();
-	const [name, setName] = useState(existingBasket?.name || "");
+	const [name, setName] = useState(existingGiftBasket?.name || "");
 	const [description, setDescription] = useState(
-		existingBasket?.description || ""
+		existingGiftBasket?.description || ""
 	);
-	const [price, setPrice] = useState(existingBasket?.price || 0);
-	const [color, setColor] = useState(existingBasket?.color || "");
+	const [price, setPrice] = useState(existingGiftBasket?.price || 0);
+	const [profit, setProfit] = useState(existingGiftBasket?.profit || 0);
+	const [type, setType] = useState(existingGiftBasket?.type || "");
 	const [isSerbian, setIsSerbian] = useState(
-		existingBasket?.isSerbian || false
+		existingGiftBasket?.isSerbian || false
 	);
-
 	async function handleSubmit(e: any) {
 		e.preventDefault();
-		const data = { name, description, price, color, isSerbian };
+		const data = { name, description, price, profit, type, isSerbian };
 
 		if (mode !== "edit") {
-			await axios.post("http://localhost:9090/basket-type/create", data, {
+			await axios.post("http://localhost:9090/gift-basket/create", data, {
 				withCredentials: true,
 			});
-			router.push("/baskets");
-		} else if (mode === "edit" && existingBasket) {
+			router.push("/gift-baskets");
+		} else if (mode === "edit" && existingGiftBasket) {
 			await axios.patch(
-				`http://localhost:9090/basket-type/update/${existingBasket._id}`,
+				`http://localhost:9090/gift-basket/update/${existingGiftBasket._id}`,
 				data,
 				{
 					withCredentials: true,
 				}
 			);
-			router.push("/baskets");
+			router.push("/gift-baskets");
 		}
 	}
 
@@ -79,14 +80,23 @@ export default function Basket({ mode, existingBasket }: BasketProps) {
 					value={price}
 					onChange={(e) => setPrice(parseInt(e.target.value))}
 				/>
-				<label htmlFor="color">Basket color</label>
+				<label htmlFor="profit">Basket profit</label>
 				<input
-					id="color"
-					name="color"
+					id="profit"
+					name="profit"
+					type="number"
+					placeholder="profit"
+					value={profit}
+					onChange={(e) => setProfit(parseInt(e.target.value))}
+				/>
+				<label htmlFor="type">Basket type</label>
+				<input
+					name="type"
+					id="type"
 					type="text"
-					placeholder="color"
-					value={color}
-					onChange={(e) => setColor(e.target.value)}
+					placeholder="basket type"
+					value={type}
+					onChange={(e) => setType(e.target.value)}
 				/>
 				<label htmlFor="isSerbian">Is Serbian</label>
 				<input

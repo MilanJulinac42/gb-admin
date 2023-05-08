@@ -43,7 +43,7 @@ export default function BasketItem({
 			router.push("/basket-items");
 		} else if (mode === "edit" && existingBasketItem) {
 			await axios.patch(
-				`http://localhost:9090/basket-item/update\\${existingBasketItem._id}`,
+				`http://localhost:9090/basket-item/update${existingBasketItem._id}`,
 				data,
 				{
 					withCredentials: true,
