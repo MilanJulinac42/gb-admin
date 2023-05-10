@@ -14,6 +14,7 @@ export interface GiftBasketProps {
 		profit: number;
 		type: string;
 		isSerbian: boolean;
+		imageUrl: string;
 	};
 }
 
@@ -26,22 +27,37 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 	const [price, setPrice] = useState(existingGiftBasket?.price || 0);
 	const [profit, setProfit] = useState(existingGiftBasket?.profit || 0);
 	const [type, setType] = useState(existingGiftBasket?.type || "");
+	const [imageUpload, setImageUpload] = useState<File | null>(null);
 	const [isSerbian, setIsSerbian] = useState(
 		existingGiftBasket?.isSerbian || false
 	);
+
 	async function handleSubmit(e: any) {
 		e.preventDefault();
-		const data = { name, description, price, profit, type, isSerbian };
+		const formData = new FormData();
+		formData.append("name", name);
+		formData.append("description", description);
+		formData.append("price", price.toString());
+		formData.append("profit", profit.toString());
+		formData.append("type", type);
+		formData.append("isSerbian", isSerbian ? "true" : "false");
+		if (imageUpload) {
+			formData.append("imageUpload", imageUpload);
+		}
 
 		if (mode !== "edit") {
-			await axios.post("http://localhost:9090/gift-basket/create", data, {
-				withCredentials: true,
-			});
+			await axios.post(
+				"http://localhost:9090/gift-basket/create",
+				formData,
+				{
+					withCredentials: true,
+				}
+			);
 			router.push("/gift-baskets");
 		} else if (mode === "edit" && existingGiftBasket) {
 			await axios.patch(
 				`http://localhost:9090/gift-basket/update/${existingGiftBasket._id}`,
-				data,
+				formData,
 				{
 					withCredentials: true,
 				}
@@ -54,6 +70,23 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 		<Layout>
 			<form onSubmit={handleSubmit}>
 				<h1>{mode === "create" ? "New Basket" : "Edit Basket"}</h1>
+				{existingGiftBasket?.imageUrl && (
+					<div>
+						<img src={existingGiftBasket?.imageUrl} alt={name} />
+					</div>
+				)}
+
+				<input
+					type="file"
+					name="imageUpload"
+					id="imageUpload"
+					onChange={(e) => {
+						if (e.target.files) {
+							setImageUpload(e.target.files[0]);
+						}
+					}}
+				/>
+
 				<label htmlFor="name">Basket name</label>
 				<input
 					name="name"
