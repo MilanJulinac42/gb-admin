@@ -60,9 +60,6 @@ export default function GiftBasketItemList({
 								<span className="font-medium text-gray-500 mr-2">
 									Quantity:{" "}
 								</span>
-								{/* <span className="font-semibold text-blue-900 mr-3">
-									{giftBasketItem.quantity}
-								</span> */}
 								<input
 									className="font-semibold text-blue-900 mr-3 w-40 mt-2"
 									type="number"
@@ -71,15 +68,6 @@ export default function GiftBasketItemList({
 										changeQuantity(e, giftBasketItem._id)
 									}
 								/>
-								{/* <button
-									type="button"
-									className="btn-primary px-2 py-1 rounded"
-									onClick={() =>
-										increaseQuantity(giftBasketItem._id)
-									}
-								>
-									+
-								</button> */}
 								<button
 									type="button"
 									className="btn-delete px-2 py-1 rounded"
