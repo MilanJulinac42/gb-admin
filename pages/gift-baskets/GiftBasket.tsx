@@ -62,24 +62,22 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 		setExistingGiftBasketItems([...existingGiftBasketItems, item]);
 	};
 
-	const increaseQuantity = (itemId: string) => {
-		setExistingGiftBasketItems((prevItems: any) =>
-			prevItems.map((item: any) =>
+	const changeQuantity = (e: any, itemId: string) => {
+		setExistingGiftBasketItems((prevItems: any) => {
+			return prevItems.map((item: any) =>
 				item._id === itemId
-					? { ...item, quantity: item.quantity + 1 }
+					? { ...item, quantity: parseInt(e.target.value) }
 					: item
-			)
-		);
+			);
+		});
 	};
 
-	const decreaseQuantity = (itemId: string) => {
-		setExistingGiftBasketItems((prevItems: any) =>
-			prevItems.map((item: any) =>
-				item._id === itemId && item.quantity > 0
-					? { ...item, quantity: item.quantity - 1 }
-					: item
-			)
-		);
+	const removeItem = (itemId: string) => {
+		setExistingGiftBasketItems((prevItems: any) => {
+			return prevItems.filter((item: any) => {
+				return item._id !== itemId;
+			});
+		});
 	};
 
 	async function fetchBasketTypes() {
@@ -191,8 +189,8 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 
 				<GiftBasketItemList
 					existingGiftBasketItems={existingGiftBasketItems}
-					increaseQuantity={increaseQuantity}
-					decreaseQuantity={decreaseQuantity}
+					changeQuantity={changeQuantity}
+					removeItem={removeItem}
 					addNewItemToBasketItems={addNewItemToBasketItems}
 					basketItems={basketItems}
 				/>

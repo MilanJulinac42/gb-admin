@@ -15,8 +15,8 @@ interface GiftBasketItem {
 
 export interface GiftBasketItemsProps {
 	existingGiftBasketItems: GiftBasketItem[];
-	increaseQuantity: (itemId: string) => void;
-	decreaseQuantity: (itemId: string) => void;
+	changeQuantity: (e: any, itemId: string) => void;
+	removeItem: (itemId: string) => void;
 	addNewItemToBasketItems: any;
 	basketItems: any;
 }
@@ -24,8 +24,8 @@ export interface GiftBasketItemsProps {
 export default function GiftBasketItemList({
 	existingGiftBasketItems,
 	addNewItemToBasketItems,
-	increaseQuantity,
-	decreaseQuantity,
+	changeQuantity,
+	removeItem,
 	basketItems,
 }: GiftBasketItemsProps) {
 	const [newItem, setNewItem] = useState({ _id: "", name: "" });
@@ -60,10 +60,18 @@ export default function GiftBasketItemList({
 								<span className="font-medium text-gray-500 mr-2">
 									Quantity:{" "}
 								</span>
-								<span className="font-semibold text-blue-900 mr-3">
+								{/* <span className="font-semibold text-blue-900 mr-3">
 									{giftBasketItem.quantity}
-								</span>
-								<button
+								</span> */}
+								<input
+									className="font-semibold text-blue-900 mr-3 w-40 mt-2"
+									type="number"
+									value={giftBasketItem.quantity}
+									onChange={(e) =>
+										changeQuantity(e, giftBasketItem._id)
+									}
+								/>
+								{/* <button
 									type="button"
 									className="btn-primary px-2 py-1 rounded"
 									onClick={() =>
@@ -71,15 +79,15 @@ export default function GiftBasketItemList({
 									}
 								>
 									+
-								</button>
+								</button> */}
 								<button
 									type="button"
 									className="btn-delete px-2 py-1 rounded"
 									onClick={() =>
-										decreaseQuantity(giftBasketItem._id)
+										removeItem(giftBasketItem._id)
 									}
 								>
-									-
+									X
 								</button>
 							</div>
 						</div>
