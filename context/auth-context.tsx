@@ -33,7 +33,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const [loading, setLoading] = useState(true);
 
 	const isAuthenticated = !!user;
-	console.log(isAuthenticated);
 
 	useEffect(() => {
 		const storedUser = sessionStorage.getItem("user");

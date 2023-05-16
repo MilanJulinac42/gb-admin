@@ -20,7 +20,6 @@ export default function BasketItem({
 	mode,
 	existingBasketItem,
 }: BasketItemProps) {
-	console.log(existingBasketItem);
 	const router = useRouter();
 	const [name, setName] = useState(existingBasketItem?.name || "");
 	const [description, setDescription] = useState(
