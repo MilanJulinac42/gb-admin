@@ -45,7 +45,8 @@ export default function GiftBasketItemList({
 	};
 
 	return (
-		<ul className="list-none mb-2">
+		<ul className="list-none mb-2 border-4 border-blue-300 p-4">
+			<h1>Basket items list:</h1>
 			{existingGiftBasketItems &&
 				existingGiftBasketItems.map((giftBasketItem) => (
 					<li
@@ -82,41 +83,46 @@ export default function GiftBasketItemList({
 					</li>
 				))}
 
-			<label htmlFor="basketItem">Basket Item</label>
-			<select
-				name="basketItem"
-				id="basketItem"
-				value={newItem._id || ""}
-				onChange={(e) => handleNewBasketItemChange(e)}
-			>
-				<option value="">Select a basket type</option>
-				{basketItems?.map((basketItem: any) => (
-					<option key={basketItem._id} value={basketItem._id}>
-						{basketItem.name}
-					</option>
-				))}
-			</select>
+			<hr className="bg-green-600 h-2 mt-2" />
 
-			<label htmlFor="quantity">Basket item quantity</label>
-			<input
-				id="quantity"
-				name="quantity"
-				type="number"
-				placeholder="quantity"
-				value={newItemQuantity}
-				onChange={(e) => setNewItemQuantity(parseInt(e.target.value))}
-			/>
-			<button
-				type="button"
-				onClick={() =>
-					addNewItemToBasketItems({
-						item: newItem,
-						quantity: newItemQuantity,
-					})
-				}
-			>
-				add new item
-			</button>
+			<div className="bg-white rounded mt-2">
+				<h3>Select new basket item and insert quantity</h3>
+				<select
+					name="basketItem"
+					id="basketItem"
+					value={newItem._id || ""}
+					onChange={(e) => handleNewBasketItemChange(e)}
+				>
+					<option value="">Select a new basket item</option>
+					{basketItems?.map((basketItem: any) => (
+						<option key={basketItem._id} value={basketItem._id}>
+							{basketItem.name}
+						</option>
+					))}
+				</select>
+				<input
+					id="quantity"
+					name="quantity"
+					type="number"
+					placeholder="quantity"
+					value={newItemQuantity}
+					onChange={(e) =>
+						setNewItemQuantity(parseInt(e.target.value))
+					}
+				/>
+				<button
+					className="btn-edit"
+					type="button"
+					onClick={() =>
+						addNewItemToBasketItems({
+							item: newItem,
+							quantity: newItemQuantity,
+						})
+					}
+				>
+					add new item
+				</button>
+			</div>
 		</ul>
 	);
 }
