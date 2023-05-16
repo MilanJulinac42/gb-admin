@@ -24,7 +24,7 @@ export default function TableItem({ item, type }: any) {
 			{type !== "basketItem" && (
 				<td className="px-4 py-2">
 					<img
-						src={item.image}
+						src={item.imageUrl}
 						alt={item.name}
 						className="h-12 w-auto"
 					/>
