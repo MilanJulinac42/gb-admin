@@ -16,7 +16,7 @@ export interface GiftBasketProps {
 		type: string;
 		isSerbian: boolean;
 		imageUrl: string;
-		basketType: { _id: string; name: string };
+		basketType: { _id: string; name: string; price: number };
 		giftBasketItems: any;
 	};
 }
@@ -24,11 +24,13 @@ export interface GiftBasketProps {
 interface BasketType {
 	_id: string;
 	name: string;
+	price: number;
 }
 
 interface BasketItem {
 	_id: string;
 	name: string;
+	price: number;
 }
 
 export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
@@ -52,34 +54,50 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 		existingGiftBasket?.isSerbian || false
 	);
 	const [basketTypes, setBasketTypes] = useState<BasketType[] | null>([]);
+	const [basketTypePrice, setBasketTypePrice] = useState(
+		existingGiftBasket?.basketType.price || 0
+	);
 	const [basketItems, setBasketItems] = useState<BasketItem[] | null>([]);
 
 	const [previewImage, setPreviewImage] = useState(
 		existingGiftBasket?.imageUrl || ""
 	);
 
+	const [totalItemCost, setTotalItemCost] = useState(0);
+
+	const calculateTotalItemCost = () => {
+		let totalCost = 0;
+		existingGiftBasketItems.forEach((element: any) => {
+			totalCost += element.quantity * element.item.price;
+		});
+		setTotalItemCost(totalCost);
+	};
+
 	const addNewItemToBasketItems = (item: any) => {
 		setExistingGiftBasketItems([...existingGiftBasketItems, item]);
 	};
 
-	const increaseQuantity = (itemId: string) => {
-		setExistingGiftBasketItems((prevItems: any) =>
-			prevItems.map((item: any) =>
-				item._id === itemId
-					? { ...item, quantity: item.quantity + 1 }
-					: item
-			)
-		);
+	const calculateBasketProfit = () => {
+		setProfit(price - totalItemCost - basketTypePrice);
 	};
 
-	const decreaseQuantity = (itemId: string) => {
-		setExistingGiftBasketItems((prevItems: any) =>
-			prevItems.map((item: any) =>
-				item._id === itemId && item.quantity > 0
-					? { ...item, quantity: item.quantity - 1 }
+	const changeQuantity = (e: any, itemId: string) => {
+		setExistingGiftBasketItems((prevItems: any) => {
+			return prevItems.map((item: any) =>
+				item._id === itemId
+					? { ...item, quantity: parseInt(e.target.value) }
 					: item
-			)
-		);
+			);
+		});
+		calculateTotalItemCost();
+	};
+
+	const removeItem = (itemId: string) => {
+		setExistingGiftBasketItems((prevItems: any) => {
+			return prevItems.filter((item: any) => {
+				return item._id !== itemId;
+			});
+		});
 	};
 
 	async function fetchBasketTypes() {
@@ -107,7 +125,16 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 	useEffect(() => {
 		fetchBasketTypes();
 		fetchBasketItems();
+		calculateTotalItemCost();
 	}, []);
+
+	useEffect(() => {
+		calculateTotalItemCost();
+	}, [existingGiftBasketItems]);
+
+	useEffect(() => {
+		calculateBasketProfit();
+	}, [totalItemCost, basketTypePrice, price]);
 
 	const handleBasketTypeChange = (e: any) => {
 		const selectedBasketType = basketTypes?.find(
@@ -115,6 +142,7 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 		);
 		if (selectedBasketType) {
 			setSelectedBasketTypeId(selectedBasketType._id);
+			setBasketTypePrice(selectedBasketType.price);
 		}
 	};
 
@@ -191,10 +219,11 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 
 				<GiftBasketItemList
 					existingGiftBasketItems={existingGiftBasketItems}
-					increaseQuantity={increaseQuantity}
-					decreaseQuantity={decreaseQuantity}
+					changeQuantity={changeQuantity}
+					removeItem={removeItem}
 					addNewItemToBasketItems={addNewItemToBasketItems}
 					basketItems={basketItems}
+					totalItemCost={totalItemCost}
 				/>
 
 				<label htmlFor="name">Basket name</label>
@@ -216,20 +245,33 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 					onChange={(e) => setDescription(e.target.value)}
 				></textarea>
 
-				<label htmlFor="basketType">Basket Type</label>
-				<select
-					name="basketType"
-					id="basketType"
-					value={selectedBasketTypeId || ""}
-					onChange={(e) => handleBasketTypeChange(e)}
-				>
-					<option value="">Select a basket type</option>
-					{basketTypes?.map((basketType) => (
-						<option key={basketType._id} value={basketType._id}>
-							{basketType.name}
-						</option>
-					))}
-				</select>
+				<label htmlFor="basketType" className="block mb-2">
+					Basket Type
+				</label>
+				<div className="flex justify-between">
+					<select
+						name="basketType"
+						id="basketType"
+						value={selectedBasketTypeId || ""}
+						onChange={(e) => handleBasketTypeChange(e)}
+						className="mr-2"
+					>
+						<option value="">Select a basket type</option>
+						{basketTypes?.map((basketType) => (
+							<option key={basketType._id} value={basketType._id}>
+								{basketType.name}
+							</option>
+						))}
+					</select>
+					<span className="text-blue-900 font-bold text-lg w-32 mr-4 mt-1">
+						Price: {basketTypePrice}
+					</span>
+				</div>
+
+				<h2 className="info-header">
+					BASKET TOTAL INVESTMENT COST:{" "}
+					{basketTypePrice + totalItemCost}
+				</h2>
 
 				<label htmlFor="price">Basket price</label>
 				<input
@@ -241,17 +283,9 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 					onChange={(e) => setPrice(parseInt(e.target.value))}
 				/>
 
-				<label htmlFor="profit">Basket profit</label>
-				<input
-					id="profit"
-					name="profit"
-					type="number"
-					placeholder="profit"
-					value={profit}
-					onChange={(e) => setProfit(parseInt(e.target.value))}
-				/>
+				<h2 className="info-header">BASKET PROFIT: {profit}</h2>
 
-				<label htmlFor="type">Basket type</label>
+				<label htmlFor="type">Basket Class</label>
 				<input
 					name="type"
 					id="type"

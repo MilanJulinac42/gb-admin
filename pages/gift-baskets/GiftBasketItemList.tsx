@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 interface Item {
 	_id: string;
 	name: string;
@@ -15,21 +14,25 @@ interface GiftBasketItem {
 
 export interface GiftBasketItemsProps {
 	existingGiftBasketItems: GiftBasketItem[];
-	increaseQuantity: (itemId: string) => void;
-	decreaseQuantity: (itemId: string) => void;
+	changeQuantity: (e: any, itemId: string) => void;
+	removeItem: (itemId: string) => void;
 	addNewItemToBasketItems: any;
 	basketItems: any;
+	totalItemCost: number;
 }
 
 export default function GiftBasketItemList({
 	existingGiftBasketItems,
 	addNewItemToBasketItems,
-	increaseQuantity,
-	decreaseQuantity,
+	changeQuantity,
+	removeItem,
 	basketItems,
+	totalItemCost,
 }: GiftBasketItemsProps) {
-	const [newItem, setNewItem] = useState({ _id: "", name: "" });
+	const [newItem, setNewItem] = useState({ _id: "", name: "", price: 0 });
 	const [newItemQuantity, setNewItemQuantity] = useState(0);
+
+	console.log(existingGiftBasketItems);
 
 	const handleNewBasketItemChange = (e: any) => {
 		const selectedId = e.target.value;
@@ -38,14 +41,28 @@ export default function GiftBasketItemList({
 		);
 
 		if (selectedItem) {
-			setNewItem({ _id: selectedItem._id, name: selectedItem.name });
+			setNewItem({
+				_id: selectedItem._id,
+				name: selectedItem.name,
+				price: selectedItem.price,
+			});
 		} else {
-			setNewItem({ _id: "", name: "" });
+			setNewItem({ _id: "", name: "", price: 0 });
 		}
 	};
 
+	const generateUniqueId = () => {
+		return "_" + Math.random().toString(36).substr(2, 9);
+	};
+
 	return (
-		<ul className="list-none mb-2">
+		<ul className="list-none mb-2 border-4 border-blue-300 p-4">
+			<div className="flex justify-between">
+				<h1>Basket items list:</h1>
+				<span className="text-blue-900 font-bold mr-4 text-lg">
+					Total item cost: {totalItemCost}
+				</span>
+			</div>
 			{existingGiftBasketItems &&
 				existingGiftBasketItems.map((giftBasketItem) => (
 					<li
@@ -60,67 +77,76 @@ export default function GiftBasketItemList({
 								<span className="font-medium text-gray-500 mr-2">
 									Quantity:{" "}
 								</span>
-								<span className="font-semibold text-blue-900 mr-3">
-									{giftBasketItem.quantity}
-								</span>
-								<button
-									type="button"
-									className="btn-primary px-2 py-1 rounded"
-									onClick={() =>
-										increaseQuantity(giftBasketItem._id)
+								<input
+									className="font-semibold text-blue-900 mr-3 w-40 mt-2"
+									type="number"
+									value={giftBasketItem.quantity}
+									onChange={(e) =>
+										changeQuantity(e, giftBasketItem._id)
 									}
-								>
-									+
-								</button>
+								/>
+								<span className="font-semibold text-blue-900 mr-3">
+									cost:
+								</span>
+								<span className="font-semibold text-blue-900 mr-3">
+									{giftBasketItem.item.price *
+										giftBasketItem.quantity}
+								</span>
 								<button
 									type="button"
 									className="btn-delete px-2 py-1 rounded"
 									onClick={() =>
-										decreaseQuantity(giftBasketItem._id)
+										removeItem(giftBasketItem._id)
 									}
 								>
-									-
+									X
 								</button>
 							</div>
 						</div>
 					</li>
 				))}
 
-			<label htmlFor="basketItem">Basket Item</label>
-			<select
-				name="basketItem"
-				id="basketItem"
-				value={newItem._id || ""}
-				onChange={(e) => handleNewBasketItemChange(e)}
-			>
-				<option value="">Select a basket type</option>
-				{basketItems?.map((basketItem: any) => (
-					<option key={basketItem._id} value={basketItem._id}>
-						{basketItem.name}
-					</option>
-				))}
-			</select>
+			<hr className="bg-green-600 h-2 mt-2" />
 
-			<label htmlFor="quantity">Basket item quantity</label>
-			<input
-				id="quantity"
-				name="quantity"
-				type="number"
-				placeholder="quantity"
-				value={newItemQuantity}
-				onChange={(e) => setNewItemQuantity(parseInt(e.target.value))}
-			/>
-			<button
-				type="button"
-				onClick={() =>
-					addNewItemToBasketItems({
-						item: newItem,
-						quantity: newItemQuantity,
-					})
-				}
-			>
-				add new item
-			</button>
+			<div className="bg-white rounded mt-2">
+				<h3>Select new basket item and insert quantity</h3>
+				<select
+					name="basketItem"
+					id="basketItem"
+					value={newItem._id || ""}
+					onChange={(e) => handleNewBasketItemChange(e)}
+				>
+					<option value="">Select a new basket item</option>
+					{basketItems?.map((basketItem: any) => (
+						<option key={basketItem._id} value={basketItem._id}>
+							{basketItem.name}
+						</option>
+					))}
+				</select>
+				<input
+					id="quantity"
+					name="quantity"
+					type="number"
+					placeholder="quantity"
+					value={newItemQuantity}
+					onChange={(e) =>
+						setNewItemQuantity(parseInt(e.target.value))
+					}
+				/>
+				<button
+					className="btn-edit"
+					type="button"
+					onClick={() =>
+						addNewItemToBasketItems({
+							_id: generateUniqueId(),
+							item: newItem,
+							quantity: newItemQuantity,
+						})
+					}
+				>
+					add new item
+				</button>
+			</div>
 		</ul>
 	);
 }
