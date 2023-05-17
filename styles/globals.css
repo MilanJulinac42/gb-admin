@@ -6,6 +6,10 @@ h1 {
 	@apply text-blue-900 mb-2 text-xl;
 }
 
+h2 {
+	@apply text-gray-700 font-bold text-xl mb-2;
+}
+
 h3 {
 	@apply text-blue-900 mb-4 text-lg font-semibold;
 }

@@ -19,6 +19,7 @@ export interface GiftBasketItemsProps {
 	removeItem: (itemId: string) => void;
 	addNewItemToBasketItems: any;
 	basketItems: any;
+	totalItemCost: number;
 }
 
 export default function GiftBasketItemList({
@@ -27,8 +28,9 @@ export default function GiftBasketItemList({
 	changeQuantity,
 	removeItem,
 	basketItems,
+	totalItemCost,
 }: GiftBasketItemsProps) {
-	const [newItem, setNewItem] = useState({ _id: "", name: "" });
+	const [newItem, setNewItem] = useState({ _id: "", name: "", price: 0 });
 	const [newItemQuantity, setNewItemQuantity] = useState(0);
 
 	const handleNewBasketItemChange = (e: any) => {
@@ -38,15 +40,25 @@ export default function GiftBasketItemList({
 		);
 
 		if (selectedItem) {
-			setNewItem({ _id: selectedItem._id, name: selectedItem.name });
+			console.log(selectedItem);
+			setNewItem({
+				_id: selectedItem._id,
+				name: selectedItem.name,
+				price: selectedItem.price,
+			});
 		} else {
-			setNewItem({ _id: "", name: "" });
+			setNewItem({ _id: "", name: "", price: 0 });
 		}
 	};
 
 	return (
 		<ul className="list-none mb-2 border-4 border-blue-300 p-4">
-			<h1>Basket items list:</h1>
+			<div className="flex justify-between">
+				<h1>Basket items list:</h1>
+				<span className="text-blue-900 font-bold mr-4 text-lg">
+					Total item cost: {totalItemCost}
+				</span>
+			</div>
 			{existingGiftBasketItems &&
 				existingGiftBasketItems.map((giftBasketItem) => (
 					<li
@@ -69,6 +81,13 @@ export default function GiftBasketItemList({
 										changeQuantity(e, giftBasketItem._id)
 									}
 								/>
+								<span className="font-semibold text-blue-900 mr-3">
+									cost:
+								</span>
+								<span className="font-semibold text-blue-900 mr-3">
+									{giftBasketItem.item.price *
+										giftBasketItem.quantity}
+								</span>
 								<button
 									type="button"
 									className="btn-delete px-2 py-1 rounded"
