@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 interface Item {
 	_id: string;
 	name: string;
@@ -33,6 +32,8 @@ export default function GiftBasketItemList({
 	const [newItem, setNewItem] = useState({ _id: "", name: "", price: 0 });
 	const [newItemQuantity, setNewItemQuantity] = useState(0);
 
+	console.log(existingGiftBasketItems);
+
 	const handleNewBasketItemChange = (e: any) => {
 		const selectedId = e.target.value;
 		const selectedItem = basketItems.find(
@@ -40,7 +41,6 @@ export default function GiftBasketItemList({
 		);
 
 		if (selectedItem) {
-			console.log(selectedItem);
 			setNewItem({
 				_id: selectedItem._id,
 				name: selectedItem.name,
@@ -49,6 +49,10 @@ export default function GiftBasketItemList({
 		} else {
 			setNewItem({ _id: "", name: "", price: 0 });
 		}
+	};
+
+	const generateUniqueId = () => {
+		return "_" + Math.random().toString(36).substr(2, 9);
 	};
 
 	return (
@@ -134,6 +138,7 @@ export default function GiftBasketItemList({
 					type="button"
 					onClick={() =>
 						addNewItemToBasketItems({
+							_id: generateUniqueId(),
 							item: newItem,
 							quantity: newItemQuantity,
 						})
