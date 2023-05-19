@@ -33,14 +33,16 @@ export default function TableItem({ item, type }: any) {
 			<td className="px-4 py-2">{item.name}</td>
 			<td className="px-4 py-2">{item.description}</td>
 			<td className="px-4 py-2">{item.price}</td>
-			{type === "basketItem" && (
+			{type === "basketType" && (
 				<td className="px-4 py-2">{item.color}</td>
 			)}
 			{type === "giftBasket" && (
-				<td className="px-4 py-2">{item.profit}</td>
-			)}
-			{type === "giftBasket" && (
-				<td className="px-4 py-2">{item.type}</td>
+				<>
+					<td className="px-4 py-2">{item.profit}</td>
+					<td className="px-4 py-2">{item.sold}</td>
+					<td className="px-4 py-2">{item.inStock}</td>
+					<td className="px-4 py-2">{item.type}</td>
+				</>
 			)}
 			<td className="px-4 py-2 text-center">
 				{item.isSerbian ? <Checkmark /> : null}

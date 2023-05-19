@@ -26,7 +26,7 @@ export default function Baskets() {
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
-				<ItemList items={items}></ItemList>
+				<ItemList type={"basketType"} items={items}></ItemList>
 			)}
 		</Layout>
 	);

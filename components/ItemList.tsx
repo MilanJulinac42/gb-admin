@@ -11,14 +11,16 @@ export default function ItemTable({ items, type }: any) {
 					<th className="px-4 py-2">Name</th>
 					<th className="px-4 py-2">Description</th>
 					<th className="px-4 py-2">Price</th>
-					{type === "basketItem" && (
+					{type === "basketType" && (
 						<th className="px-4 py-2">Color</th>
 					)}
 					{type === "giftBasket" && (
-						<th className="px-4 py-2">Profit</th>
-					)}
-					{type === "giftBasket" && (
-						<th className="px-4 py-2">Type</th>
+						<>
+							<th className="px-4 py-2">Profit</th>
+							<th className="px-4 py-2">Sold</th>
+							<th className="px-4 py-2">In stock</th>
+							<th className="px-4 py-2">Type</th>
+						</>
 					)}
 					<th className="px-4 py-2">Serbian</th>
 					<th className="px-4 py-2">Actions</th>

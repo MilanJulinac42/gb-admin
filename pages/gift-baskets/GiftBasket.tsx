@@ -13,6 +13,10 @@ export interface GiftBasketProps {
 		description: string;
 		price: number;
 		profit: number;
+		inStock: number;
+		liked: number;
+		totalProfit: number;
+		sold: number;
 		type: string;
 		isSerbian: boolean;
 		imageUrl: string;
@@ -44,6 +48,7 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 	);
 	const [price, setPrice] = useState(existingGiftBasket?.price || 0);
 	const [profit, setProfit] = useState(existingGiftBasket?.profit || 0);
+	const [inStock, setInStock] = useState(existingGiftBasket?.inStock || 0);
 	const [type, setType] = useState(existingGiftBasket?.type || "");
 	const [imageUpload, setImageUpload] = useState<File | null>(null);
 
@@ -161,6 +166,7 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 		formData.append("description", description);
 		formData.append("price", price.toString());
 		formData.append("profit", profit.toString());
+		formData.append("inStock", inStock.toString());
 		formData.append("type", type);
 		formData.append("isSerbian", isSerbian ? "true" : "false");
 		formData.append("basketType", selectedBasketTypeId);
@@ -199,8 +205,13 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 			<form onSubmit={handleSubmit}>
 				<h1>{mode === "create" ? "New Basket" : "Edit Basket"}</h1>
 
-				<div>
+				<div className="flex justify-between gap-48">
 					<img src={previewImage} alt={name} />
+					<div className="text-left flex-grow">
+						<p>BASKETS SOLD: {existingGiftBasket?.sold}</p>
+						<p>TOTAL PROFIT: {existingGiftBasket?.totalProfit}</p>
+						<p>NUMBER OF LIKES: {existingGiftBasket?.liked}</p>
+					</div>
 				</div>
 
 				<input
@@ -293,6 +304,16 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 					placeholder="basket type"
 					value={type}
 					onChange={(e) => setType(e.target.value)}
+				/>
+
+				<label htmlFor="inStock">In stock</label>
+				<input
+					id="inStock"
+					name="inStock"
+					type="number"
+					placeholder="in stock"
+					value={inStock}
+					onChange={(e) => setInStock(parseInt(e.target.value))}
 				/>
 
 				<label htmlFor="isSerbian">Is Serbian</label>
