@@ -29,15 +29,19 @@ label {
 }
 
 .btn-primary {
-	@apply bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2;
+	@apply bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded;
 }
 
 .btn-edit {
-	@apply bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2;
+	@apply bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded;
 }
 
 .btn-delete {
 	@apply bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded;
+}
+
+.btn-information {
+	@apply bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded;
 }
 
 .check-input {

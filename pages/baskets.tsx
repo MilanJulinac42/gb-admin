@@ -1,4 +1,3 @@
-// baskets.tsx
 import Link from "next/link";
 import Layout from "../components/Layout";
 import ItemList from "../components/ItemList";
