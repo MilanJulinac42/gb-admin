@@ -15,7 +15,6 @@ export default function Orders() {
 			.then((response) => {
 				setItems(response.data.orders);
 				setIsLoading(false);
-				console.log(items);
 			})
 			.catch((err) => console.log(err));
 	}, []);

@@ -5,8 +5,22 @@ import ItemList from "../components/ItemList";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+type BasketItem = {
+	_id: string;
+	name: string;
+	description: string;
+	price: number;
+	weight: number;
+	giftBasket: string[];
+	isSerbian: boolean;
+	deleted: boolean;
+	__v: number;
+	createdAt?: string;
+	updatedAt?: string;
+};
+
 export default function Baskets() {
-	const [items, setItems] = useState([]);
+	const [items, setItems] = useState<BasketItem[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
