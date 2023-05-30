@@ -2,6 +2,14 @@
 import Link from "next/link";
 import Checkmark from "./Checkmark";
 import { useEffect, useState } from "react";
+import { GiftBasket } from "../pages/gift-baskets";
+import { BasketType } from "../pages/baskets";
+import { BasketItem } from "../pages/basket-items";
+
+export type ItemTableProps = {
+	item: GiftBasket | BasketType | BasketItem;
+	type: string;
+};
 
 export default function TableItem({ item, type }: any) {
 	const [hrefValue, setHrefValue] = useState("");

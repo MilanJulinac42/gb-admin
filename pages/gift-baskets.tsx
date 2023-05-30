@@ -21,7 +21,7 @@ type BasketType = {
 	name: string;
 };
 
-type GiftBasket = {
+export type GiftBasket = {
 	_id: string;
 	name: string;
 	description: string;

@@ -1,6 +1,14 @@
+import { BasketItem } from "../pages/basket-items";
+import { BasketType } from "../pages/baskets";
+import { GiftBasket } from "../pages/gift-baskets";
 import TableItem from "./TableItem";
 
-export default function ItemTable({ items, type }: any) {
+export type ItemTableProps = {
+	items: (GiftBasket | BasketType | BasketItem)[];
+	type: string;
+};
+
+export default function ItemTable({ items, type }: ItemTableProps) {
 	return (
 		<table className="table-auto w-full">
 			<thead className="bg-blue-900 text-white">

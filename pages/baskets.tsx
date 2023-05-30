@@ -4,7 +4,7 @@ import ItemList from "../components/ItemList";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-type BasketType = {
+export type BasketType = {
 	_id: string;
 	name: string;
 	description: string;
