@@ -1,9 +1,9 @@
 // gift-baskets/GiftBaskets.tsx
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
-import GiftBasketItemList, { GiftBasketItemsProps } from "./GiftBasketItemList";
+import GiftBasketItemList from "./GiftBasketItemList";
 
 export interface GiftBasketProps {
 	mode: "create" | "edit";
@@ -21,7 +21,7 @@ export interface GiftBasketProps {
 		isSerbian: boolean;
 		imageUrl: string;
 		basketType: { _id: string; name: string; price: number };
-		giftBasketItems: any;
+		giftBasketItems: GiftBasketItems;
 	};
 }
 
@@ -31,18 +31,33 @@ interface BasketType {
 	price: number;
 }
 
-interface BasketItem {
+export interface BasketItem {
 	_id: string;
 	name: string;
 	price: number;
 }
 
+export type Item = {
+	_id: string;
+	name: string;
+	price: number;
+};
+
+export type GiftBasketItem = {
+	item: Item;
+	quantity: number;
+	_id: string;
+};
+
+export type GiftBasketItems = GiftBasketItem[];
+
+type Basket = BasketItem[];
+
 export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 	const router = useRouter();
 	const [name, setName] = useState(existingGiftBasket?.name || "");
-	const [existingGiftBasketItems, setExistingGiftBasketItems] = useState<any>(
-		existingGiftBasket?.giftBasketItems || []
-	);
+	const [existingGiftBasketItems, setExistingGiftBasketItems] =
+		useState<GiftBasketItems>(existingGiftBasket?.giftBasketItems || []);
 	const [description, setDescription] = useState(
 		existingGiftBasket?.description || ""
 	);
@@ -72,13 +87,13 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 
 	const calculateTotalItemCost = () => {
 		let totalCost = 0;
-		existingGiftBasketItems.forEach((element: any) => {
+		existingGiftBasketItems.forEach((element: GiftBasketItem) => {
 			totalCost += element.quantity * element.item.price;
 		});
 		setTotalItemCost(totalCost);
 	};
 
-	const addNewItemToBasketItems = (item: any) => {
+	const addNewItemToBasketItems = (item: GiftBasketItem) => {
 		setExistingGiftBasketItems([...existingGiftBasketItems, item]);
 	};
 
@@ -87,8 +102,8 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 	};
 
 	const changeQuantity = (e: any, itemId: string) => {
-		setExistingGiftBasketItems((prevItems: any) => {
-			return prevItems.map((item: any) =>
+		setExistingGiftBasketItems((prevItems: GiftBasketItems) => {
+			return prevItems.map((item: GiftBasketItem) =>
 				item._id === itemId
 					? { ...item, quantity: parseInt(e.target.value) }
 					: item
@@ -98,8 +113,8 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 	};
 
 	const removeItem = (itemId: string) => {
-		setExistingGiftBasketItems((prevItems: any) => {
-			return prevItems.filter((item: any) => {
+		setExistingGiftBasketItems((prevItems: GiftBasketItems) => {
+			return prevItems.filter((item: GiftBasketItem) => {
 				return item._id !== itemId;
 			});
 		});
@@ -135,6 +150,7 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 
 	useEffect(() => {
 		calculateTotalItemCost();
+		console.log(existingGiftBasketItems);
 	}, [existingGiftBasketItems]);
 
 	useEffect(() => {
@@ -151,11 +167,11 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 		}
 	};
 
-	async function handleSubmit(e: any) {
+	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 
 		const formatedGiftBasketItems = existingGiftBasketItems.map(
-			({ item, quantity }: any) => ({
+			({ item, quantity }: GiftBasketItem) => ({
 				item: item._id,
 				quantity,
 			})

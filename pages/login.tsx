@@ -1,6 +1,6 @@
 import { useAuth } from "../context/auth-context";
 import { login } from "../utils/auth-utils";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function Login() {
@@ -9,7 +9,7 @@ export default function Login() {
 	const [password, setPassword] = useState("");
 	const router = useRouter();
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
 			const user = await login(email, password);

@@ -1,23 +1,17 @@
 import { useState } from "react";
-interface Item {
-	_id: string;
-	name: string;
-	description: string;
-	price: number;
-}
-
-interface GiftBasketItem {
-	item: Item;
-	quantity: number;
-	_id: string;
-}
+import {
+	BasketItem,
+	Item,
+	GiftBasketItems,
+	GiftBasketItem,
+} from "./GiftBasket";
 
 export interface GiftBasketItemsProps {
-	existingGiftBasketItems: GiftBasketItem[];
+	existingGiftBasketItems: GiftBasketItems;
 	changeQuantity: (e: any, itemId: string) => void;
 	removeItem: (itemId: string) => void;
-	addNewItemToBasketItems: any;
-	basketItems: any;
+	addNewItemToBasketItems: (item: GiftBasketItem) => void;
+	basketItems: BasketItem[] | null;
 	totalItemCost: number;
 }
 
@@ -29,14 +23,16 @@ export default function GiftBasketItemList({
 	basketItems,
 	totalItemCost,
 }: GiftBasketItemsProps) {
-	const [newItem, setNewItem] = useState({ _id: "", name: "", price: 0 });
+	const [newItem, setNewItem] = useState<Item>({
+		_id: "",
+		name: "",
+		price: 0,
+	});
 	const [newItemQuantity, setNewItemQuantity] = useState(0);
-
-	console.log(existingGiftBasketItems);
 
 	const handleNewBasketItemChange = (e: any) => {
 		const selectedId = e.target.value;
-		const selectedItem = basketItems.find(
+		const selectedItem = basketItems?.find(
 			(item: any) => item._id === selectedId
 		);
 
@@ -113,7 +109,7 @@ export default function GiftBasketItemList({
 				<select
 					name="basketItem"
 					id="basketItem"
-					value={newItem._id || ""}
+					value={newItem?._id || ""}
 					onChange={(e) => handleNewBasketItemChange(e)}
 				>
 					<option value="">Select a new basket item</option>

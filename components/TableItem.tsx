@@ -8,7 +8,7 @@ import { BasketItem } from "../pages/basket-items";
 
 type TableItemProps = {
 	item: BasketType | GiftBasket | BasketItem;
-	type: string;
+	type: "basketItem" | "basketType" | "giftBasket";
 };
 
 export default function TableItem({ item, type }: TableItemProps) {

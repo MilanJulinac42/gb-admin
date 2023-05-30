@@ -3,10 +3,12 @@ import { BasketType } from "../pages/baskets";
 import { GiftBasket } from "../pages/gift-baskets";
 import TableItem from "./TableItem";
 
-export type ItemTableProps = {
+type ItemTableProps = {
 	items: (GiftBasket | BasketType | BasketItem)[];
-	type: string;
+	type: "basketItem" | "basketType" | "giftBasket";
 };
+
+type ItemTableItem = GiftBasket | BasketType | BasketItem;
 
 export default function ItemTable({ items, type }: ItemTableProps) {
 	return (
@@ -35,7 +37,7 @@ export default function ItemTable({ items, type }: ItemTableProps) {
 				</tr>
 			</thead>
 			<tbody>
-				{items.map((item: any) => (
+				{items.map((item: ItemTableItem) => (
 					<TableItem type={type} item={item}></TableItem>
 				))}
 			</tbody>

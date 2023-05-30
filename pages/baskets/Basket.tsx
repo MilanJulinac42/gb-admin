@@ -1,5 +1,5 @@
 // baskets/Basket.tsx
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Layout from "../../components/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -28,7 +28,7 @@ export default function Basket({ mode, existingBasket }: BasketProps) {
 		existingBasket?.isSerbian || false
 	);
 
-	async function handleSubmit(e: any) {
+	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		const data = { name, description, price, color, isSerbian };
 
