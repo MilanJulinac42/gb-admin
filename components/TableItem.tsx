@@ -2,16 +2,16 @@
 import Link from "next/link";
 import Checkmark from "./Checkmark";
 import { useEffect, useState } from "react";
-import { GiftBasket } from "../pages/gift-baskets";
 import { BasketType } from "../pages/baskets";
+import { GiftBasket } from "../pages/gift-baskets";
 import { BasketItem } from "../pages/basket-items";
 
-export type ItemTableProps = {
-	item: GiftBasket | BasketType | BasketItem;
+type TableItemProps = {
+	item: BasketType | GiftBasket | BasketItem;
 	type: string;
 };
 
-export default function TableItem({ item, type }: any) {
+export default function TableItem({ item, type }: TableItemProps) {
 	const [hrefValue, setHrefValue] = useState("");
 
 	useEffect(() => {
@@ -29,7 +29,7 @@ export default function TableItem({ item, type }: any) {
 			className="bg-white text-black border-b border-gray-200 text-center"
 			key={item._id}
 		>
-			{type !== "basketItem" && (
+			{type !== "basketItem" && "imageUrl" in item && (
 				<td className="px-4 py-2">
 					<img
 						src={item.imageUrl}
@@ -41,10 +41,10 @@ export default function TableItem({ item, type }: any) {
 			<td className="px-4 py-2">{item.name}</td>
 			<td className="px-4 py-2">{item.description}</td>
 			<td className="px-4 py-2">{item.price}</td>
-			{type === "basketType" && (
+			{type === "basketType" && "color" in item && (
 				<td className="px-4 py-2">{item.color}</td>
 			)}
-			{type === "giftBasket" && (
+			{type === "giftBasket" && "profit" in item && (
 				<>
 					<td className="px-4 py-2">{item.profit}</td>
 					<td className="px-4 py-2">{item.sold}</td>
