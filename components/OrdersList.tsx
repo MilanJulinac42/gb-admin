@@ -1,7 +1,13 @@
-export default function OrdersList({ items }: any) {
+import { OrderType, OrdersType, BasketsOrder } from "../pages/orders";
+
+type OrdersListProps = {
+	items: OrdersType;
+};
+
+export default function OrdersList({ items }: OrdersListProps) {
 	return (
 		<div>
-			{items.map((item: any) => (
+			{items.map((item: OrderType) => (
 				<div className="border border-blue-900 p-4 border-2 mb-4">
 					<div className="grid grid-cols-4 gap-4 border-b border-blue-200">
 						<p className="font-semibold text-blue-900">
@@ -32,7 +38,7 @@ export default function OrdersList({ items }: any) {
 							<p className="font-semibold text-blue-900">
 								Order baskets:
 							</p>
-							{item.baskets.map((item: any) => (
+							{item.baskets.map((item: BasketsOrder) => (
 								<p>{item.basketId + " " + item.quantity}</p>
 							))}
 						</div>

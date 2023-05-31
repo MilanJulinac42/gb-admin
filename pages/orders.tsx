@@ -3,8 +3,34 @@ import Layout from "../components/Layout";
 import axios from "axios";
 import OrdersList from "../components/OrdersList";
 
+export type BasketsOrder = {
+	quantity: number;
+	_id: string;
+	basketId: string;
+};
+
+export type OrderType = {
+	_id: string;
+	email: string;
+	firstName: string;
+	lastName: string;
+	baskets: BasketsOrder[];
+	totalPrice: number;
+	orderStatus: string;
+	paymentType: string;
+	street: string;
+	city: string;
+	zipCode: string;
+	country: string;
+	createdAt: string;
+	updatedAt: string;
+	__v: number;
+};
+
+export type OrdersType = OrderType[];
+
 export default function Orders() {
-	const [items, setItems] = useState([]);
+	const [items, setItems] = useState<OrdersType>([]);
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {

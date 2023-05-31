@@ -6,9 +6,17 @@ import {
 	ReactNode,
 } from "react";
 
+type User = {
+	id: string;
+	role: string;
+	email: string;
+	iat: number;
+	exp: number;
+};
+
 type IAuthContext = {
 	isAuthenticated: boolean;
-	user: any;
+	user: User | null;
 	setUser: (user: any) => void;
 	logout: () => void;
 	loading: boolean;
