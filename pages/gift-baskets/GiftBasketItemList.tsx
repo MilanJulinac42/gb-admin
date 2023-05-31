@@ -1,19 +1,14 @@
 import { useState } from "react";
-import {
-	BasketItem,
-	Item,
-	GiftBasketItems,
-	GiftBasketItem,
-} from "./GiftBasket";
+import { BasketItem, GiftBasketItems, GiftBasketItem } from "./GiftBasket";
 
-export interface GiftBasketItemsProps {
+export type GiftBasketItemsProps = {
 	existingGiftBasketItems: GiftBasketItems;
 	changeQuantity: (e: any, itemId: string) => void;
 	removeItem: (itemId: string) => void;
 	addNewItemToBasketItems: (item: GiftBasketItem) => void;
 	basketItems: BasketItem[] | null;
 	totalItemCost: number;
-}
+};
 
 export default function GiftBasketItemList({
 	existingGiftBasketItems,
@@ -23,7 +18,7 @@ export default function GiftBasketItemList({
 	basketItems,
 	totalItemCost,
 }: GiftBasketItemsProps) {
-	const [newItem, setNewItem] = useState<Item>({
+	const [newItem, setNewItem] = useState<BasketItem>({
 		_id: "",
 		name: "",
 		price: 0,
@@ -33,7 +28,7 @@ export default function GiftBasketItemList({
 	const handleNewBasketItemChange = (e: any) => {
 		const selectedId = e.target.value;
 		const selectedItem = basketItems?.find(
-			(item: any) => item._id === selectedId
+			(item: BasketItem) => item._id === selectedId
 		);
 
 		if (selectedItem) {
@@ -113,7 +108,7 @@ export default function GiftBasketItemList({
 					onChange={(e) => handleNewBasketItemChange(e)}
 				>
 					<option value="">Select a new basket item</option>
-					{basketItems?.map((basketItem: any) => (
+					{basketItems?.map((basketItem: BasketItem) => (
 						<option key={basketItem._id} value={basketItem._id}>
 							{basketItem.name}
 						</option>

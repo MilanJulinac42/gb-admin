@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import GiftBasketItemList from "./GiftBasketItemList";
 
-export interface GiftBasketProps {
+export type GiftBasketProps = {
 	mode: "create" | "edit";
 	existingGiftBasket?: {
 		_id: number;
@@ -23,28 +23,22 @@ export interface GiftBasketProps {
 		basketType: { _id: string; name: string; price: number };
 		giftBasketItems: GiftBasketItems;
 	};
-}
+};
 
-interface BasketType {
+type BasketType = {
 	_id: string;
 	name: string;
 	price: number;
-}
+};
 
-export interface BasketItem {
-	_id: string;
-	name: string;
-	price: number;
-}
-
-export type Item = {
+export type BasketItem = {
 	_id: string;
 	name: string;
 	price: number;
 };
 
 export type GiftBasketItem = {
-	item: Item;
+	item: BasketItem;
 	quantity: number;
 	_id: string;
 };

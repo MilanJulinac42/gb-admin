@@ -4,7 +4,7 @@ import Layout from "../../components/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-export interface BasketItemProps {
+export type BasketItemProps = {
 	mode: "create" | "edit";
 	existingBasketItem?: {
 		_id: number;
@@ -14,7 +14,7 @@ export interface BasketItemProps {
 		weight: number;
 		isSerbian: boolean;
 	};
-}
+};
 
 export default function BasketItem({
 	mode,

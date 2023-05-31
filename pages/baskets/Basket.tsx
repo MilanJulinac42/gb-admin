@@ -4,7 +4,7 @@ import Layout from "../../components/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-export interface BasketProps {
+export type BasketProps = {
 	mode: "create" | "edit";
 	existingBasket?: {
 		_id: number;
@@ -14,7 +14,7 @@ export interface BasketProps {
 		color: string;
 		isSerbian: boolean;
 	};
-}
+};
 
 export default function Basket({ mode, existingBasket }: BasketProps) {
 	const router = useRouter();

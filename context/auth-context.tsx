@@ -6,13 +6,13 @@ import {
 	ReactNode,
 } from "react";
 
-interface IAuthContext {
+type IAuthContext = {
 	isAuthenticated: boolean;
 	user: any;
 	setUser: (user: any) => void;
 	logout: () => void;
 	loading: boolean;
-}
+};
 
 const AuthContext = createContext<IAuthContext>({
 	isAuthenticated: false,
@@ -24,9 +24,9 @@ const AuthContext = createContext<IAuthContext>({
 
 export const useAuth = () => useContext(AuthContext);
 
-interface AuthProviderProps {
+type AuthProviderProps = {
 	children: ReactNode;
-}
+};
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const [user, setUser] = useState(null);

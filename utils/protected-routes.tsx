@@ -2,9 +2,9 @@ import { ReactNode } from "react";
 import { useAuth } from "../context/auth-context";
 import { useRouter } from "next/router";
 
-interface ProtectedRoutesProps {
+type ProtectedRoutesProps = {
 	children: ReactNode;
-}
+};
 
 const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ children }) => {
 	const router = useRouter();
