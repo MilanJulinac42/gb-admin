@@ -14,10 +14,10 @@ export default function OrdersList({ items }: OrdersListProps) {
 							Email: {item.email}
 						</p>
 						<p className="font-semibold text-blue-900">
-							Price: {item.totalPrice}
+							Date: {item.createdAt}
 						</p>
 						<p className="font-semibold text-blue-900">
-							Date: {item.createdAt}
+							Price: {item.totalPrice}
 						</p>
 						<p className="font-semibold text-blue-900">
 							Status: {item.orderStatus}

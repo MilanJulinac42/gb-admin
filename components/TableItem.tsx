@@ -56,7 +56,7 @@ export default function TableItem({ item, type }: TableItemProps) {
 				{item.isSerbian ? <Checkmark /> : null}
 			</td>
 			<td className="px-4 py-2">
-				<div className="flex justify-center">
+				<div className="flex justify-center gap-1">
 					<Link href={`/${hrefValue}/edit/${item._id}`}>
 						<button className="btn-edit">Edit</button>
 					</Link>

@@ -15,7 +15,7 @@ export default function ItemTable({ items, type }: ItemTableProps) {
 		<table className="table-auto w-full">
 			<thead className="bg-blue-900 text-white">
 				<tr>
-					{type !== "basketItem" && (
+					{type === "giftBasket" && (
 						<th className="px-4 py-2">Image</th>
 					)}
 					<th className="px-4 py-2">Name</th>
