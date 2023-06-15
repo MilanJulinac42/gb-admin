@@ -38,7 +38,7 @@ export default function ItemTable({ items, type }: ItemTableProps) {
 			</thead>
 			<tbody>
 				{items.map((item: ItemTableItem) => (
-					<TableItem type={type} item={item}></TableItem>
+					<TableItem type={type} item={item} key={item._id} />
 				))}
 			</tbody>
 		</table>
