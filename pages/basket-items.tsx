@@ -68,7 +68,7 @@ export default function Baskets() {
 
 		for (let i = 1; i <= totalPages; i++) {
 			paginationLinks.push(
-				<Link href={`/gift-baskets?page=${i}&limit=${limit}`} key={i}>
+				<Link href={`/basket-items?page=${i}&limit=${limit}`} key={i}>
 					<span
 						className={
 							page === i ? "text-blue-800 font-bold" : "text-gray"
