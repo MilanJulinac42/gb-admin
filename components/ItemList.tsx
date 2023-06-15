@@ -11,9 +11,6 @@ type ItemTableProps = {
 type ItemTableItem = GiftBasket | BasketType | BasketItem;
 
 export default function ItemTable({ items, type }: ItemTableProps) {
-	// const startIndex = (page - 1) * limit;
-	// const endIndex = startIndex + limit;
-
 	return (
 		<table className="table-auto w-full">
 			<thead className="bg-blue-900 text-white">

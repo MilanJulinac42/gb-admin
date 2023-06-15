@@ -93,7 +93,9 @@ export default function GiftBaskets() {
 			paginationLinks.push(
 				<Link href={`/gift-baskets?page=${i}&limit=${limit}`} key={i}>
 					<span
-						className={page === i ? "text-blue-800" : "text-gray"}
+						className={
+							page === i ? "text-blue-800 font-bold" : "text-gray"
+						}
 						onClick={() => handlePageClick(i)}
 					>
 						{i}
@@ -114,7 +116,7 @@ export default function GiftBaskets() {
 			) : (
 				<>
 					<ItemList items={items} type={"giftBasket"}></ItemList>
-					<div className="flex justify-end gap-2 mt-2">
+					<div className="flex justify-end gap-3 mt-2 items-center">
 						<button
 							className="bg-blue-800 hover:bg-blue-900 text-white py-2 px-4 rounded disabled:bg-gray-300"
 							onClick={previousPage}
