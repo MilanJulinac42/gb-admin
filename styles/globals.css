@@ -54,3 +54,15 @@ label {
 select {
 	@apply block w-full bg-white border border-blue-300 text-blue-900 py-2 px-4 rounded mb-4;
 }
+
+th {
+	position: relative;
+}
+
+.sort-indicator {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: -0.5rem;
+	font-size: 0.8rem;
+}
