@@ -29,6 +29,7 @@ export default function Baskets() {
 	const [fromPriceFilter, setFromPriceFilter] = useState("");
 	const [toPriceFilter, setToPriceFilter] = useState("");
 	const [shouldFetchData, setShouldFetchData] = useState(false);
+	const [showFilters, setShowFilters] = useState(false);
 
 	const fetchData = async () => {
 		try {
@@ -115,82 +116,94 @@ export default function Baskets() {
 		<Layout>
 			<h1>Basket Page</h1>
 			<Link href={"/basket-items/BasketItem"}>Add new basket item</Link>
+			<button
+				className="block bg-blue-600 text-white px-4 py-2 rounded cursor-pointer font-bold hover:bg-blue-700 mt-2 mb-2"
+				onClick={() => setShowFilters(!showFilters)}
+			>
+				Filters
+			</button>
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
 				<>
-					<div className="filters text-white p-4 mt-2 mb-2 rounded border border-blue-900 border-1 ">
-						<div className="grid grid-cols-2 gap-4">
-							<div className="flex flex-col gap-2">
-								<label htmlFor="nameFilter">Name filter</label>
-								<input
-									type="text"
-									id="nameFilter"
-									className="p-2 rounded bg-white text-black"
-									value={nameFilter}
-									onChange={(e) =>
-										setNameFilter(e.target.value)
-									}
-								/>
-							</div>
+					{showFilters && (
+						<div className="filters text-white p-4 mt-2 mb-2 rounded border border-blue-900 border-1 ">
+							<div className="grid grid-cols-2 gap-4">
+								<div className="flex flex-col gap-2">
+									<label htmlFor="nameFilter">
+										Name filter
+									</label>
+									<input
+										type="text"
+										id="nameFilter"
+										className="p-2 rounded bg-white text-black"
+										value={nameFilter}
+										onChange={(e) =>
+											setNameFilter(e.target.value)
+										}
+									/>
+								</div>
 
-							<div className="flex flex-col gap-2">
-								<label>Price filter</label>
-								<div className="flex gap-4">
-									<div className="flex flex-col gap-2">
-										<label
-											htmlFor="fromPriceFilter"
-											className="text-sm"
-										>
-											From
-										</label>
-										<input
-											type="text"
-											id="fromPriceFilter"
-											className="p-2 rounded bg-white text-black w-20"
-											value={fromPriceFilter}
-											onChange={(e) =>
-												setFromPriceFilter(
-													e.target.value
-												)
-											}
-										/>
-									</div>
-									<div className="flex flex-col gap-2">
-										<label
-											htmlFor="toPriceFilter"
-											className="text-sm"
-										>
-											To
-										</label>
-										<input
-											type="text"
-											id="toPriceFilter"
-											className="p-2 rounded bg-white text-black w-20"
-											value={toPriceFilter}
-											onChange={(e) =>
-												setToPriceFilter(e.target.value)
-											}
-										/>
+								<div className="flex flex-col gap-2">
+									<label>Price filter</label>
+									<div className="flex gap-4">
+										<div className="flex flex-col gap-2">
+											<label
+												htmlFor="fromPriceFilter"
+												className="text-sm"
+											>
+												From
+											</label>
+											<input
+												type="text"
+												id="fromPriceFilter"
+												className="p-2 rounded bg-white text-black w-20"
+												value={fromPriceFilter}
+												onChange={(e) =>
+													setFromPriceFilter(
+														e.target.value
+													)
+												}
+											/>
+										</div>
+										<div className="flex flex-col gap-2">
+											<label
+												htmlFor="toPriceFilter"
+												className="text-sm"
+											>
+												To
+											</label>
+											<input
+												type="text"
+												id="toPriceFilter"
+												className="p-2 rounded bg-white text-black w-20"
+												value={toPriceFilter}
+												onChange={(e) =>
+													setToPriceFilter(
+														e.target.value
+													)
+												}
+											/>
+										</div>
 									</div>
 								</div>
 							</div>
+							<div className="text-center mt-4">
+								<button
+									className="bg-white text-blue-900 px-4 py-2 rounded"
+									onClick={applyFilers}
+								>
+									Apply Filters
+								</button>
+								<button
+									className="bg-white text-blue-900 px-4 py-2 rounded ml-4"
+									onClick={clearFilters}
+								>
+									Clear Filters
+								</button>
+							</div>
 						</div>
-						<div className="text-center mt-4">
-							<button
-								className="bg-white text-blue-900 px-4 py-2 rounded"
-								onClick={applyFilers}
-							>
-								Apply Filters
-							</button>
-							<button
-								className="bg-white text-blue-900 px-4 py-2 rounded ml-4"
-								onClick={clearFilters}
-							>
-								Clear Filters
-							</button>
-						</div>
-					</div>
+					)}
 
 					<ItemList type={"basketItem"} items={items}></ItemList>
 					<div className="flex justify-end gap-3 mt-2 items-center">
