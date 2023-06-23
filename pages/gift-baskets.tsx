@@ -48,6 +48,10 @@ export default function GiftBaskets() {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 	const [totalPages, setTotalPages] = useState(0);
+	const [nameFilter, setNameFilter] = useState("");
+	const [fromPriceFilter, setFromPriceFilter] = useState("");
+	const [toPriceFilter, setToPriceFilter] = useState("");
+	const [shouldFetchData, setShouldFetchData] = useState(false);
 
 	const fetchData = async () => {
 		try {
@@ -57,16 +61,26 @@ export default function GiftBaskets() {
 					params: {
 						page,
 						limit,
+						name: nameFilter,
+						priceFrom: fromPriceFilter,
+						priceTo: toPriceFilter,
 					},
 				}
 			);
 			setItems(response.data.baskets.baskets);
 			setTotalPages(Math.ceil(response.data.baskets.total / 10));
 			setIsLoading(false);
+			setShouldFetchData(false);
 		} catch (error) {
 			console.log(error);
 		}
 	};
+
+	useEffect(() => {
+		if (shouldFetchData) {
+			fetchData();
+		}
+	}, [shouldFetchData]);
 
 	useEffect(() => {
 		fetchData();
