@@ -127,13 +127,21 @@ export default function GiftBasketItemList({
 				<button
 					className="btn-edit"
 					type="button"
-					onClick={() =>
+					disabled={
+						!basketItems ||
+						basketItems.length === 0 ||
+						newItem._id === "" ||
+						newItemQuantity === 0
+					}
+					onClick={() => {
 						addNewItemToBasketItems({
 							_id: generateUniqueId(),
 							item: newItem,
 							quantity: newItemQuantity,
-						})
-					}
+						});
+						setNewItem({ _id: "", name: "", price: 0 });
+						setNewItemQuantity(0);
+					}}
 				>
 					add new item
 				</button>
