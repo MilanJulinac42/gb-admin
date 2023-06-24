@@ -89,6 +89,15 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 
 	const addNewItemToBasketItems = (item: GiftBasketItem) => {
 		setExistingGiftBasketItems([...existingGiftBasketItems, item]);
+
+		setBasketItems((prevItems: BasketItem[] | null) => {
+			if (prevItems) {
+				return prevItems.filter((basketItem: BasketItem) => {
+					return basketItem._id !== item.item._id;
+				});
+			}
+			return null;
+		});
 	};
 
 	const calculateBasketProfit = () => {
@@ -107,11 +116,24 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 	};
 
 	const removeItem = (itemId: string) => {
+		const itemToRemove = existingGiftBasketItems.find(
+			(item: GiftBasketItem) => item._id === itemId
+		);
+
 		setExistingGiftBasketItems((prevItems: GiftBasketItems) => {
 			return prevItems.filter((item: GiftBasketItem) => {
 				return item._id !== itemId;
 			});
 		});
+
+		if (itemToRemove) {
+			setBasketItems((prevItems: BasketItem[] | null) => {
+				if (prevItems) {
+					return [...prevItems, itemToRemove.item];
+				}
+				return [itemToRemove.item];
+			});
+		}
 	};
 
 	async function fetchBasketTypes() {
@@ -144,7 +166,6 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 
 	useEffect(() => {
 		calculateTotalItemCost();
-		console.log(existingGiftBasketItems);
 	}, [existingGiftBasketItems]);
 
 	useEffect(() => {
