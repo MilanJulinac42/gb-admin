@@ -152,7 +152,18 @@ export default function Basket({ mode, existingGiftBasket }: GiftBasketProps) {
 			const response = await axios.get(
 				"http://localhost:9090/basket-item/find-all?adminBasketCreation=true"
 			);
-			setBasketItems(response.data.basketItems);
+
+			const filteredBasketItems = response.data.basketItems.filter(
+				(basketItem: BasketItem) => {
+					return !existingGiftBasketItems.some(
+						(giftBasketItem: GiftBasketItem) => {
+							return giftBasketItem.item._id === basketItem._id;
+						}
+					);
+				}
+			);
+
+			setBasketItems(filteredBasketItems);
 		} catch (error) {
 			console.error("Error fetching basket types:", error);
 		}
