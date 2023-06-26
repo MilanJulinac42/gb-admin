@@ -7,11 +7,12 @@ import TableItem from "./TableItem";
 type ItemTableProps = {
 	items: (GiftBasket | BasketType | BasketItem)[];
 	type: "basketItem" | "basketType" | "giftBasket";
+	onUpdate: () => void;
 };
 
 type ItemTableItem = GiftBasket | BasketType | BasketItem;
 
-export default function ItemTable({ items, type }: ItemTableProps) {
+export default function ItemTable({ items, type, onUpdate }: ItemTableProps) {
 	const [sortField, setSortField] = useState("");
 	const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
@@ -147,7 +148,12 @@ export default function ItemTable({ items, type }: ItemTableProps) {
 			</thead>
 			<tbody>
 				{sortedItems.map((item: ItemTableItem) => (
-					<TableItem type={type} item={item} key={item._id} />
+					<TableItem
+						onUpdate={onUpdate}
+						type={type}
+						item={item}
+						key={item._id}
+					/>
 				))}
 			</tbody>
 		</table>

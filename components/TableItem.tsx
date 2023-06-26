@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import { BasketType } from "../pages/baskets";
 import { GiftBasket } from "../pages/gift-baskets";
 import { BasketItem } from "../pages/basket-items";
+import axios from "axios";
 
 type TableItemProps = {
 	item: BasketType | GiftBasket | BasketItem;
 	type: "basketItem" | "basketType" | "giftBasket";
+	onUpdate: () => void;
 };
 
-export default function TableItem({ item, type }: TableItemProps) {
+export default function TableItem({ item, type, onUpdate }: TableItemProps) {
 	const [hrefValue, setHrefValue] = useState("");
 	const [removeLink, setRemoveLink] = useState("");
 	const [restoreLink, setRestoreLink] = useState("");
@@ -31,6 +33,48 @@ export default function TableItem({ item, type }: TableItemProps) {
 			setRestoreLink("http://localhost:9090/basket-type/restore");
 		}
 	}, []);
+
+	async function removeObject(id: string) {
+		try {
+			const response = await axios.patch(
+				`${removeLink}/${id}`,
+				{},
+				{
+					headers: {
+						"Content-Type": "application/json",
+					},
+					withCredentials: true,
+				}
+			);
+
+			const data = response.data;
+			console.log("Item removed successfully:", data);
+			onUpdate();
+		} catch (error) {
+			console.error("Error removing item:", error);
+		}
+	}
+
+	async function restoreObject(id: string) {
+		try {
+			const response = await axios.patch(
+				`${restoreLink}/${id}`,
+				{},
+				{
+					headers: {
+						"Content-Type": "application/json",
+					},
+					withCredentials: true,
+				}
+			);
+
+			const data = response.data;
+			console.log("Item restored successfully:", data);
+			onUpdate();
+		} catch (error) {
+			console.error("Error restoring item:", error);
+		}
+	}
 
 	return (
 		<tr
@@ -68,7 +112,21 @@ export default function TableItem({ item, type }: TableItemProps) {
 					<Link href={`/${hrefValue}/edit/${item._id}`}>
 						<button className="btn-edit">Edit</button>
 					</Link>
-					<button className="btn-delete">Delete</button>
+					{!item.deleted ? (
+						<button
+							onClick={() => removeObject(item._id)}
+							className="btn-delete"
+						>
+							Delete
+						</button>
+					) : (
+						<button
+							onClick={() => restoreObject(item._id)}
+							className="btn-primary"
+						>
+							Retore
+						</button>
+					)}
 				</div>
 			</td>
 		</tr>
