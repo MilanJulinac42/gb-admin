@@ -13,14 +13,22 @@ type TableItemProps = {
 
 export default function TableItem({ item, type }: TableItemProps) {
 	const [hrefValue, setHrefValue] = useState("");
+	const [removeLink, setRemoveLink] = useState("");
+	const [restoreLink, setRestoreLink] = useState("");
 
 	useEffect(() => {
 		if (type === "giftBasket") {
 			setHrefValue("gift-baskets");
+			setRemoveLink("http://localhost:9090/gift-basket/remove");
+			setRestoreLink("http://localhost:9090/gift-basket/restore");
 		} else if (type === "basketItem") {
 			setHrefValue("basket-items");
+			setRemoveLink("http://localhost:9090/basket-item/remove");
+			setRestoreLink("http://localhost:9090/basket-item/restore");
 		} else {
 			setHrefValue("baskets");
+			setRemoveLink("http://localhost:9090/basket-type/remove");
+			setRestoreLink("http://localhost:9090/basket-type/restore");
 		}
 	}, []);
 
