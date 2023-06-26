@@ -1,10 +1,56 @@
+import { useEffect, useState } from "react";
 import { OrderType, OrdersType, BasketsOrder } from "../pages/orders";
+import axios from "axios";
 
 type OrdersListProps = {
 	items: OrdersType;
 };
 
-export default function OrdersList({ items }: OrdersListProps) {
+type OrderStatus = {};
+
+export default function OrdersList({ items: initialItems }: OrdersListProps) {
+	const [items, setItems] = useState(initialItems);
+	console.log("Initial items:", initialItems);
+	console.log("Items state:", items);
+
+	async function changeOrderStatus(
+		orderId: string,
+		newStatus: OrderStatus,
+		onSuccess: (updatedOrder: OrderType) => void
+	) {
+		try {
+			const response = await axios.patch(
+				`http://localhost:9090/order/change-order-status/${orderId}`,
+				{ orderStatus: newStatus },
+				{
+					headers: {
+						"Content-Type": "application/json",
+					},
+					withCredentials: true,
+				}
+			);
+
+			const data = response.data;
+			console.log("Order status updated successfully:", data);
+			onSuccess(data.order);
+		} catch (error) {
+			console.error("Error updating order status:", error);
+		}
+	}
+
+	function handleOrderStatusChange(updatedOrder: OrderType) {
+		setItems((prevItems) =>
+			prevItems.map((item) =>
+				item._id === updatedOrder._id ? updatedOrder : item
+			)
+		);
+		console.log("Items after update:", items);
+	}
+
+	useEffect(() => {
+		setItems(initialItems);
+	}, [initialItems]);
+
 	return (
 		<div>
 			{items.map((item: OrderType) => (
@@ -54,12 +100,52 @@ export default function OrdersList({ items }: OrdersListProps) {
 							<p className="font-semibold text-blue-900">
 								Edit status
 							</p>
-							<button className="btn-information">PENDING</button>
-							<button className="btn-edit mt-1">SHIPPED</button>
-							<button className="btn-primary mt-1">
+							<button
+								className="btn-information"
+								onClick={() =>
+									changeOrderStatus(
+										item._id,
+										"PENDING",
+										handleOrderStatusChange
+									)
+								}
+							>
+								PENDING
+							</button>
+							<button
+								className="btn-edit mt-1"
+								onClick={() =>
+									changeOrderStatus(
+										item._id,
+										"SHIPPED",
+										handleOrderStatusChange
+									)
+								}
+							>
+								SHIPPED
+							</button>
+							<button
+								className="btn-primary mt-1"
+								onClick={() =>
+									changeOrderStatus(
+										item._id,
+										"DELIVERED",
+										handleOrderStatusChange
+									)
+								}
+							>
 								DELIVERED
 							</button>
-							<button className="btn-delete mt-1">
+							<button
+								className="btn-delete mt-1"
+								onClick={() =>
+									changeOrderStatus(
+										item._id,
+										"CANCELLED",
+										handleOrderStatusChange
+									)
+								}
+							>
 								CANCELLED
 							</button>
 						</div>
