@@ -10,8 +10,6 @@ type OrderStatus = {};
 
 export default function OrdersList({ items: initialItems }: OrdersListProps) {
 	const [items, setItems] = useState(initialItems);
-	console.log("Initial items:", initialItems);
-	console.log("Items state:", items);
 
 	async function changeOrderStatus(
 		orderId: string,
@@ -102,6 +100,7 @@ export default function OrdersList({ items: initialItems }: OrdersListProps) {
 							</p>
 							<button
 								className="btn-information"
+								disabled={item.orderStatus === "PENDING"}
 								onClick={() =>
 									changeOrderStatus(
 										item._id,
@@ -114,6 +113,7 @@ export default function OrdersList({ items: initialItems }: OrdersListProps) {
 							</button>
 							<button
 								className="btn-edit mt-1"
+								disabled={item.orderStatus === "SHIPPED"}
 								onClick={() =>
 									changeOrderStatus(
 										item._id,
@@ -126,6 +126,7 @@ export default function OrdersList({ items: initialItems }: OrdersListProps) {
 							</button>
 							<button
 								className="btn-primary mt-1"
+								disabled={item.orderStatus === "DELIVERED"}
 								onClick={() =>
 									changeOrderStatus(
 										item._id,
@@ -138,6 +139,7 @@ export default function OrdersList({ items: initialItems }: OrdersListProps) {
 							</button>
 							<button
 								className="btn-delete mt-1"
+								disabled={item.orderStatus === "CANCELLED"}
 								onClick={() =>
 									changeOrderStatus(
 										item._id,
