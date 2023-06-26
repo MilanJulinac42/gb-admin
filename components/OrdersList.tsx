@@ -83,7 +83,7 @@ export default function OrdersList({ items: initialItems }: OrdersListProps) {
 								Order baskets:
 							</p>
 							{item.baskets.map((item: BasketsOrder) => (
-								<p>{item.basketId + " " + item.quantity}</p>
+								<p>{item.name + " " + item.quantity}</p>
 							))}
 						</div>
 						<div className="flex flex-col">

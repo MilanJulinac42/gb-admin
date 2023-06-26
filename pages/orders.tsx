@@ -7,7 +7,7 @@ export type BasketsOrder = {
 	quantity: number;
 	_id: string;
 	basketId: string;
-	basketName: string;
+	name: string;
 };
 
 export type OrderType = {
