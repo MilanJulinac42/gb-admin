@@ -104,14 +104,14 @@ export default function ItemTable({ items, type, onUpdate }: ItemTableProps) {
 						<th className="px-4 py-2">Image</th>
 					)}
 					<th
-						className="px-4 py-2"
+						className="px-4 py-2 cursor-pointer"
 						onClick={() => handleSort("name")}
 					>
 						Name {getSortIndicator("name")}
 					</th>
 					<th className="px-4 py-2">Description</th>
 					<th
-						className="px-4 py-2"
+						className="px-4 py-2 cursor-pointer"
 						onClick={() => handleSort("price")}
 					>
 						Price {getSortIndicator("price")}
@@ -122,19 +122,19 @@ export default function ItemTable({ items, type, onUpdate }: ItemTableProps) {
 					{type === "giftBasket" && (
 						<>
 							<th
-								className="px-4 py-2"
+								className="px-4 py-2 cursor-pointer"
 								onClick={() => handleSort("profit")}
 							>
 								Profit {getSortIndicator("profit")}
 							</th>
 							<th
-								className="px-4 py-2"
+								className="px-4 py-2 cursor-pointer"
 								onClick={() => handleSort("sold")}
 							>
 								Sold {getSortIndicator("sold")}
 							</th>
 							<th
-								className="px-4 py-2"
+								className="px-4 py-2 cursor-pointer"
 								onClick={() => handleSort("inStock")}
 							>
 								In stock {getSortIndicator("inStock")}
