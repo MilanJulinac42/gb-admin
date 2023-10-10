@@ -16,18 +16,14 @@ type SettingsType = {
 };
 
 export default function Settings() {
-  const [settings, setSettings] = useState<SettingsType[]>([]);
+  const [settings, setSettings] = useState<SettingsType | null>(null);
   const [shouldFetchData, setShouldFetchData] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [name, setName] = useState("");
 
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:9090/settings/find");
-
-      console.log(response.data);
-
-      setSettings(response.data.settings.settings);
+      setSettings(response.data.settings);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -38,20 +34,38 @@ export default function Settings() {
     fetchData();
   }, []);
 
+  const setSettingsHero = (newHeroTitle: string) => {
+    setSettings((prevSettings: any) => ({
+      ...prevSettings,
+      heroTitle: newHeroTitle,
+    }));
+  };
+
   return (
     <Layout>
       <h1>Settings page</h1>
-      {isLoading ? <p>Loading...</p> : <div>
-	  <label htmlFor="name">Basket name</label>
-				<input
-					name="name"
-					id="name"
-					type="text"
-					placeholder="basket name"
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-				/>
-		</div>}
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <div>
+          <label htmlFor="heroTitle">Basket name</label>
+          <input
+            name="heroTitle"
+            id="heroTitle"
+            type="text"
+            placeholder="enter hero title"
+            value={settings?.heroTitle}
+            onChange={(e) => setSettingsHero(e.target.value)}
+          />
+          <label htmlFor="name">Basket image gallery</label>
+          <div>
+            <p>Choose baskets to display in image gallery</p>
+            <ul>
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }
