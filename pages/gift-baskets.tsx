@@ -83,6 +83,7 @@ export default function GiftBaskets() {
 				}
 			);
 			setItems(response.data.baskets.baskets);
+			console.log(response.data.baskets.baskets);
 			setTotalPages(Math.ceil(response.data.baskets.total / 10));
 			setIsLoading(false);
 			setShouldFetchData(false);

@@ -4,6 +4,7 @@ import axios from "axios";
 
 type basket = {
   basketId: string;
+  imageUrl: string;
   name: string;
   type: string;
   price: number;
@@ -60,9 +61,26 @@ export default function Settings() {
           <label htmlFor="name">Basket image gallery</label>
           <div>
             <p>Choose baskets to display in image gallery</p>
-            <ul>
-              <li></li>
-            </ul>
+            <div>
+              {settings?.giftBasketsGallery.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-1 my-4 border"
+                  >
+                    <div className="flex items-center space-x-8">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        className="w-16 h-16 object-cover rounded-full"
+                      />
+                      <p>{item.name}</p>
+                    </div>
+                    <button className="btn-edit">SELECT NEW</button>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
