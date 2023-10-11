@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import axios from "axios";
 
-type basket = {
-  basketId: string;
+type Basket = {
+  _id: string;
   imageUrl: string;
   name: string;
   type: string;
@@ -13,13 +13,13 @@ type basket = {
 type SettingsType = {
   _id: string;
   heroTitle: string;
-  giftBasketsGallery: basket[];
+  giftBasketsGallery: Basket[];
 };
 
 export default function Settings() {
   const [settings, setSettings] = useState<SettingsType | null>(null);
-  const [shouldFetchData, setShouldFetchData] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [baskets, setBaskets] = useState<Basket[] | null>(null);
 
   const fetchData = async () => {
     try {
@@ -31,8 +31,21 @@ export default function Settings() {
     }
   };
 
+  const fetchBasketData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:9090/gift-basket/settings-baskets"
+      );
+
+      setBaskets(response.data.baskets);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    fetchBasketData();
   }, []);
 
   const setSettingsHero = (newHeroTitle: string) => {
@@ -40,6 +53,25 @@ export default function Settings() {
       ...prevSettings,
       heroTitle: newHeroTitle,
     }));
+  };
+
+  const handleSelectChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    item: any
+  ) => {
+    const selectedItem = e.target.value;
+    const selectedBasket = baskets?.find(
+      (basket) => basket.name === selectedItem
+    );
+
+    if (selectedBasket) {
+      setSettings((prevSettings) => ({
+        ...prevSettings!,
+        giftBasketsGallery: prevSettings!.giftBasketsGallery.map((basket) =>
+          basket._id === item._id ? selectedBasket : basket
+        ),
+      }));
+    }
   };
 
   return (
@@ -76,7 +108,19 @@ export default function Settings() {
                       />
                       <p>{item.name}</p>
                     </div>
-                    <button className="btn-edit">SELECT NEW</button>
+                    <select
+                      name="dance"
+                      id="dance"
+                      value={item._id}
+                      onChange={(e) => handleSelectChange(e, item)}
+                    >
+                      <option value={item._id}>{item.name}</option>
+                      {baskets?.map((basket: any) => (
+                        <option key={basket._id} value={basket.name}>
+                          {basket.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 );
               })}
