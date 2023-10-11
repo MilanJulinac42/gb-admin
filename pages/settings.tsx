@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import axios from "axios";
 
@@ -17,9 +17,9 @@ type SettingsType = {
 };
 
 export default function Settings() {
-  const [settings, setSettings] = useState<SettingsType | null>(null);
+  const [settings, setSettings] = useState<SettingsType>();
   const [isLoading, setIsLoading] = useState(true);
-  const [baskets, setBaskets] = useState<Basket[] | null>(null);
+  const [baskets, setBaskets] = useState<Basket[]>();
 
   const fetchData = async () => {
     try {
@@ -38,6 +38,7 @@ export default function Settings() {
       );
 
       setBaskets(response.data.baskets);
+      console.log(response.data.baskets);
     } catch (error) {
       console.log(error);
     }
@@ -54,6 +55,27 @@ export default function Settings() {
       heroTitle: newHeroTitle,
     }));
   };
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    try {
+      const response = await axios.patch(
+        "http://localhost:9090/settings/update-settings",
+        settings,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error updating settings:", error);
+    }
+  }
 
   const handleSelectChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -91,22 +113,21 @@ export default function Settings() {
             onChange={(e) => setSettingsHero(e.target.value)}
           />
           <label htmlFor="name">Basket image gallery</label>
-          <div>
+          <form onSubmit={handleSubmit}>
             <p>Choose baskets to display in image gallery</p>
             <div>
               {settings?.giftBasketsGallery.map((item, index) => {
                 return (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-1 my-4 border"
+                    className="flex items-center p-1 my-4 border gap-8"
                   >
-                    <div className="flex items-center space-x-8">
+                    <div className="space-x-8">
                       <img
                         src={item.imageUrl}
                         alt={item.name}
                         className="w-16 h-16 object-cover rounded-full"
                       />
-                      <p>{item.name}</p>
                     </div>
                     <select
                       name="dance"
@@ -125,7 +146,8 @@ export default function Settings() {
                 );
               })}
             </div>
-          </div>
+            <button className="btn-primary">APPLY</button>
+          </form>
         </div>
       )}
     </Layout>
